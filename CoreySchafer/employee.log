@@ -1,0 +1,3 @@
+INFO:Created Employees: <bound method Employee.fullname of <__main__.Employee object at 0x000001E15EAC0088>> - <bound method Employee.email of <__main__.Employee object at 0x000001E15EAC0088>>
+INFO:Created Employees: <bound method Employee.fullname of <__main__.Employee object at 0x000001E15EAC00C8>> - <bound method Employee.email of <__main__.Employee object at 0x000001E15EAC00C8>>
+INFO:Created Employees: <bound method Employee.fullname of <__main__.Employee object at 0x000001E15EAB75C8>> - <bound method Employee.email of <__main__.Employee object at 0x000001E15EAB75C8>>
