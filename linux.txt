@@ -1,0 +1,37 @@
+find . -type f -mmin -10
+find . -type f -mmin +10
+find . -type f -mtime -10 -mtime +5
+find . -size +5M
+find . -empty
+find . -perm 777
+
+find . -exec chown corey:staff {} +
+find . -type d -exec chmod 775 {} +
+find . -type f -exec chmod 664 {} +
+find . -perm 664
+find . -type f -name "*.jpg" -maxdepth 1 -exec rm {} +
+
+grep "Jane" names.txt
+grep -w "Jane" names.txt          # search exact match
+grep -wi "Jane" names.txt         # make it case-insensitive
+grep -win "Jane" names.txt        # show line number of the result
+grep -win -C 4 "Jane" names.txt   # show 4 additional lines before and after match
+grep -win "Jane" ./*      # search multiple files in current dir
+grep -winr "Jane" .    # search recursively in current dir
+grep -wirl "Jane" .    # search recursively in current dir, list files that contains match
+
+history | grep "git" | grep "config"  # pipeline the command output
+grep -P "\d{3}-\d{3}-\d{4}" names.txt  #search numbers using regular expression
+
+curl www.google.com  # return html content of the website
+
+rsync Orig/* Backup/  #sync files, rsync only copy what's different
+rsync -r Orig/ Backup/ #sync files and directories
+rsync -a Orig/ Backup/ #sync everything including file information
+rsync -av --dry-run Orig/ Backup/ # dryrun sync check what would've copied over
+rsync -av --delete --dry-run Orig/ Backup/ # careful, real sync two folders,
+                                          # things that does not exist in orig gets deleted in backup
+
+rsync -zaP TestDir/ aaron@10.0.22.96:~/myproject # target must be ssh access setup ready
+# -z:compressed, -a:include file information -P:show progress
+rsync -zaP aaron@10.0.22.96:~/myproject ~/win10-sync/ # rsyn source target
