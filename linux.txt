@@ -35,3 +35,61 @@ rsync -av --delete --dry-run Orig/ Backup/ # careful, real sync two folders,
 rsync -zaP TestDir/ aaron@10.0.22.96:~/myproject # target must be ssh access setup ready
 # -z:compressed, -a:include file information -P:show progress
 rsync -zaP aaron@10.0.22.96:~/myproject ~/win10-sync/ # rsyn source target
+
+
+
+# ceate a lab containing two Ubuntu VMs that can be ssh accessed
+VMs network setting: adapter1 as NAT, adapter2 as host-only
+revise hostname: /etc/hostname, /etc/hosts
+set VMs static ip for both VMs: /etc/network/interfaces:
+        add fours lines: auto enp0s8
+                        iface enp0s8 inet static
+                        address 192.168.56.100(101 for second VM)
+                        netmask 255.255.255.0
+run: apt-get update
+run: apt-get install openssh-server (try: service ssh restart)
+try ssh into both VMs, uname -a to verify linux kernel version
+
+troubleshoot: warning: remote host identification has changed!
+run: ssh-keygen -R 192.168.56.101
+try ssh again, leave passphrase as blank
+
+if ssh from linux host, on linux host, revise /etc/hosts to register hostname,
+so next time you can use ssh aaron@hostname instead of specifying ip address.
+
+SSH key-based authentication manual procedure(ssh without a password)
+local machine:
+1. in user home directory, run: ssh-keygen -t rsa -b 4096
+2. set passphrase or leave it blank
+3. check .ssh directory, check id_rsa(private key), id_rsa.pub(public key)
+4. run: scp ~/.ssh/id_rsa.pub aaron@192.168.56.100:/home/aaron/.ssh/uploaded_key.pub
+(optional replacing step 4: use ssh-copy-id command)
+5. in .ssh directory,
+run : ssh-copy-id aaron@192.168.56.101 # no need to config remote host by this way
+
+
+remote machine:
+1. in user home directory, run: mkdir .ssh
+2. cat ~/.ssh/uploaded_key.pub >> ~/.ssh/authorized_keys
+3. check authorized_keys file
+4. chmod 700 ~/.ssh/
+5. chomod 600 ~/.ssh/*
+(option:turn off password authentication)
+6. sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+7. sudo nano /etc/ssh/sshd_config, find: PasswordAuthentication No
+8. sudo service ssh restart
+
+customizing terminal, eidt .bashrc fromn the scrach
+
+use linux bash in windows10
+1. enable linux in "turn on/off features"
+2. install ubuntu app in microsoft app store
+3. navigate to desktop under: /mnt/c/users/afan/Desktop
+4. try touch a new test.txt file and see if it exist
+
+linux network tools
+run: apt install net-tools
+route -n: # check default gateway address
+systemd-resolve --status # check DNS server address, press q to quit
+dhclient -v -r # release DHCP address
+dhclient -v # assign DHCP address
